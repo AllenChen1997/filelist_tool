@@ -57,7 +57,7 @@ for alist in $listnames;do
 		# make the list
 		gfal-ls $fullname/$i > tmp.txt # list the only filename into tmp.txt
 		grep ".root" tmp.txt >> $alist.txt # move all the root file into the text file which with process name
-		sed -e "s|^|$fullname/$i/|g" $alist.txt # add the full directory name in front of filename
+		sed -i "s|^|$fullname/$i/|g" $alist.txt # add the full directory name in front of filename
 		if [ $percent -eq 100 ]; then
 			echo "$alist.txt is built             "
 		fi
