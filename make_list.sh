@@ -43,9 +43,10 @@ for alist in $listnames;do
 		lasttmpname=`echo $tmpname|rev|cut -d ' ' -f 1|rev` 
 		NumOfTargets=`gfal-ls -l $fullname/$lasttmpname|grep -c ".root"`
 	done
+	echo ""
 	echo "time list name: $timelistname"
-	echo "lasttmpname: $lasttmpname"
-	echo "tmp name: $tmpname"
+	#echo "lasttmpname: $lasttmpname"
+	echo "sep folders: $tmpname"
 	
 	acount_0=`echo $tmpname |wc -w` 
 	acount=0
@@ -55,7 +56,8 @@ for alist in $listnames;do
 		percent=`echo 100*$acount/$acount_0 |bc`
 		# make the list
 		gfal-ls $fullname/$i > tmp.txt # list the only filename into tmp.txt
-		sed -e "s|^|$fullname/$i/|g" tmp.txt >>  $alist.txt # add the full directory name in front of filename
+		grep ".root" tmp.txt >> $alist.txt # move all the root file into the text file which with process name
+		sed -e "s|^|$fullname/$i/|g" $alist.txt # add the full directory name in front of filename
 		if [ $percent -eq 100 ]; then
 			echo "$alist.txt is built             "
 		fi
