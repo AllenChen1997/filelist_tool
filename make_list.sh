@@ -1,5 +1,6 @@
 #!/bin/bash
-# date: 2021/ 03 / 05
+# date: 2022/ 04/ 07
+# author: Kung-Xiang Chen
 # filename: make_list.sh
 # how to us: bash make_list.sh (make sure maindir and datasets are correct)
 # # # # # # # # # # # # # # # # 
@@ -31,23 +32,24 @@ for alist in $listnames;do
 	
 	# dig into all file structure
 	fullname=$maindir/$alist
-	NumOfDirs=1
+	NumOfTargets=0
 	lasttmpname=""
-	while [ $NumOfDirs -gt 0 ];do
+	while [ $NumOfTargets -eq 0 ];do
 		if [ ! -z $lasttmpname ];then
 			fullname=$fullname/$lasttmpname
 		fi
 		timelistname=$tmpname
 		tmpname=`gfal-ls $fullname`
-		lasttmpname=`echo $tmpname|rev|cut -d ' ' -f 1|rev`
-		NumOfDirs=`gfal-ls -l $fullname/$lasttmpname|grep -c ^d`
+		lasttmpname=`echo $tmpname|rev|cut -d ' ' -f 1|rev` 
+		NumOfTargets=`gfal-ls -l $fullname/$lasttmpname|grep -c ".root"`
 	done
-	# echo "time list name: $timelistname"
-	# echo "lasttmpname: $lasttmpname"
-	# echo "tmp name: $tmpname"
+	echo "time list name: $timelistname"
+	echo "lasttmpname: $lasttmpname"
+	echo "tmp name: $tmpname"
 	
 	acount_0=`echo $tmpname |wc -w` 
 	acount=0
+	echo "start build"
 	for i in $tmpname;do
 		(( acount += 1 ))
 		percent=`echo 100*$acount/$acount_0 |bc`
